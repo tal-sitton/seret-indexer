@@ -39,11 +39,11 @@ jobs:
         run: |
           docker cp esdata/. elasticsearch:/usr/share/elasticsearch/data
           docker restart elasticsearch
-          timeout 60s sh -c 'until docker ps | grep elasticsearch | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done'
+          timeout 75s sh -c 'until docker ps | grep elasticsearch | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 5; done'
 
       - name: TEST cp to container
         run: |
-          docker exec elasticsearch/. ls /usr/share/elasticsearch/data
+          docker exec elasticsearch ls /usr/share/elasticsearch/data
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
