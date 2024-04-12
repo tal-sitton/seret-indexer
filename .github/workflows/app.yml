@@ -45,6 +45,7 @@ jobs:
       - name: TEST cp to container
         run: |
           docker exec elasticsearch ls /usr/share/elasticsearch/data
+          curl -X GET "localhost:9200/_cat/indices"
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
