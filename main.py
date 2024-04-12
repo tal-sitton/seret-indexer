@@ -58,13 +58,9 @@ def get_sites(sitemap_url: str, session: requests.Session) -> list[SiteInfoModel
 
 def filter_cached_sites(sites: list[SiteInfoModel]) -> list[SiteInfoModel]:
     cached = db.get_cached(sites)
-    logging.info(str(cached))
     cached = {cache.mid: cache.priority for cache in cached}
     min_sites = {site.mid: site.priority for site in sites}
-    logging.info(str(cached))
     if cached:
-        logging.info(str(cached))
-        logging.info(str(min_sites))
         return [site for site in sites if
                 site.mid not in cached.keys() or site.priority > 0.8
                 or site.priority != cached[site.mid]]
