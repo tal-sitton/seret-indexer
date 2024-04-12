@@ -42,7 +42,7 @@ jobs:
           docker restart elasticsearch
           timeout 75s sh -c 'until docker ps | grep elasticsearch | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 5; done'
 
-      - name: TEST cp to container
+      - name: check container
         run: |
           docker exec elasticsearch ls /usr/share/elasticsearch/data
           curl -X GET "localhost:9200/_cat/indices"
