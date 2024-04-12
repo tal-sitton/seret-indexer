@@ -26,10 +26,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
-        volumes:
-          - /esdata:/usr/share/elasticsearch/data
 
     steps:
+      - name: cp to container
+        continue-on-error: true
+        run: |
+          docker cp esdata elasticsearch:/usr/share/elasticsearch/data
+
       - uses: actions/checkout@v3
         if: github.event_name == 'pull_request'
         with:
@@ -61,7 +64,7 @@ jobs:
 
       - name: add elastic-data
         run:
-          cp /esdata esdata
+          docker cp elasticsearch:/usr/share/elasticsearch/data esdata
           git add esdata
 
       - name: commit file and push
