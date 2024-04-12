@@ -3,6 +3,7 @@ from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
+from retry import retry
 
 from db import DB
 from movie_model import MovieModel
@@ -37,6 +38,7 @@ def get_sitemap(sitemap_url: str, session: requests.Session) -> bytes:
     return res.content
 
 
+@retry(Exception, tries=3, delay=10)
 def get_sites(sitemap_url: str, session: requests.Session) -> list[SiteInfoModel]:
     sitemap = get_sitemap(sitemap_url, session)
     soup = BeautifulSoup(sitemap, "lxml")
@@ -49,6 +51,8 @@ def get_sites(sitemap_url: str, session: requests.Session) -> list[SiteInfoModel
         mid = int(url.split('MID=')[-1])
         priority = float(site.find_next('priority').text)
         sites.append(SiteInfoModel(mid=mid, url=url, priority=priority))
+    if not sites:
+        raise Exception("Failed to get sites")
     logging.info(f"Found {len(sites)} sites")
     return sites
 
