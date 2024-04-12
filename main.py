@@ -50,9 +50,10 @@ def get_sites(sitemap_url: str, session: requests.Session) -> list[SiteInfoModel
 def filter_cached_sites(sites: list[SiteInfoModel]) -> list[SiteInfoModel]:
     cached = db.get_cached(sites)
     cached = {cache.id: cache.priority for cache in cached}
-    return [site for site in sites if
-            site.mid not in cached.keys() or (site.mid in cached.keys() and site.priority > 0.8)
-            or (site.mid in cached and site.priority != cached[site.mid])]
+    if cached:
+        return [site for site in sites if
+                site.mid not in cached.keys() or (site.mid in cached.keys() and site.priority > 0.8)
+                or (site.mid in cached and site.priority != cached[site.mid])]
 
 
 def handle_site(site: SiteInfoModel, session: requests.Session, movie_index: int, all_movies_len: int):

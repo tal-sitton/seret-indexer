@@ -47,7 +47,7 @@ class DB:
             self.logger.info(f"Got {len(res['docs'])} cached sites")
             return [SiteInfoModel(**hit['_source']) for hit in res['docs'] if hit['found']]
         except Exception as e:
-            self.logger.error(f"Failed to get cached sites: {e}")
+            self.logger.warning(f"Failed to get cached sites: {e}")
             return []
 
     @thread

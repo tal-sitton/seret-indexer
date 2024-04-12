@@ -63,7 +63,7 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: add elastic-data
-        run:
+        run: |
           docker cp elasticsearch:/usr/share/elasticsearch/data esdata
           git add esdata
 
