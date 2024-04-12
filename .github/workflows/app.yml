@@ -14,11 +14,8 @@ on:
 permissions: write-all
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
     services:
-      elastic:
+      elasticsearch:
         image: ghcr.io/tal-sitton/heb-elastic:latest
         ports:
           - 9200:9200
@@ -26,6 +23,8 @@ jobs:
           - ./esdata:/usr/share/elasticsearch/data
         options: --name elasticsearch
 
+    runs-on: ubuntu-latest
+    container: python:3.12
     steps:
       - uses: actions/checkout@v3
       - name: running tests
@@ -33,24 +32,28 @@ jobs:
         run: |
           sleep 30
           curl -X GET http://localhost:9200/
+          curl -X GET http://elasticsearch:9200/
 
       - name: running tests2
         continue-on-error: true
         run: |
           sleep 30
           curl -X GET http://localhost:9200/
+          curl -X GET http://elasticsearch:9200/
 
       - name: running tests3
         continue-on-error: true
         run: |
           sleep 30
           curl -X GET http://localhost:9200/
+          curl -X GET http://elasticsearch:9200/
 
       - name: running tests4
         continue-on-error: true
         run: |
           sleep 30
           curl -X GET http://localhost:9200/
+          curl -X GET http://elasticsearch:9200/
 
 
 #      - uses: actions/checkout@v3
