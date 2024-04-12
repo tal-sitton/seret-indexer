@@ -2,7 +2,9 @@ import logging
 import os
 
 import dotenv
+import elastic_transport
 from elasticsearch import Elasticsearch
+from retry import retry
 
 from mappings import MOVIE_MAPPING
 from movie_model import MovieModel
@@ -30,6 +32,7 @@ class DB:
         self.client = Elasticsearch(hosts=[ELASTIC_HOST])
         logging.getLogger('elastic_transport.transport').setLevel(logging.WARNING)
 
+    @retry(elastic_transport.ConnectionError, tries=3, delay=10)
     def create_index(self):
         if not self.client.indices.exists(index=CACHE_INDEX):
             self.client.indices.create(index=CACHE_INDEX)
