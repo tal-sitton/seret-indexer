@@ -36,6 +36,7 @@ def get_sitemap(sitemap_url: str, session: requests.Session) -> bytes:
 def get_sites(sitemap_url: str, session: requests.Session) -> list[SiteInfoModel]:
     sitemap = get_sitemap(sitemap_url, session)
     soup = BeautifulSoup(sitemap, "lxml")
+    logging.info(sitemap)
     sites: list[SiteInfoModel] = []
     for site in soup.find_all("url"):
         url = site.find_next('loc').text
