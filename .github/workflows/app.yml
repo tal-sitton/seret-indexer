@@ -18,21 +18,19 @@ jobs:
 
     services:
       elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
-#        image: ghcr.io/tal-sitton/heb-elastic:latest
+        image: ghcr.io/tal-sitton/heb-elastic:latest
         ports:
           - 9200:9200
 #        volumes:
 #          - ./esdata:/usr/share/elasticsearch/data
 
     steps:
-      - uses: actions/checkout@v3
+#      - uses: actions/checkout@v3
       - name: running tests
         continue-on-error: true
         run: |
           sleep 30
-          netstat -a -n
-#          curl -X GET http://localhost:9200/
+          curl -X GET http://localhost:9200/
 
 
 #      - uses: actions/checkout@v3
