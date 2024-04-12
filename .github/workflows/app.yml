@@ -32,6 +32,12 @@ jobs:
         run: |
           sleep 30
           curl -X GET http://elasticsearch:9200/
+          - name: running tests
+
+      - name: test222
+        continue-on-error: true
+        run: |
+          curl -X GET http://heb-elastic:9200/
 
       - name: running tests2
         continue-on-error: true
@@ -50,6 +56,18 @@ jobs:
         run: |
           sleep 30
           curl -X GET http://elasticsearch:9200/
+
+      - name: running tests4.1
+        continue-on-error: true
+        run: |
+          sleep 30
+          curl -X GET http://localhost:9200/
+
+      - name: running tests4.2
+        continue-on-error: true
+        run: |
+          sleep 30
+          curl -X GET http://heb-elastic:9200/
 
 
 #      - uses: actions/checkout@v3
