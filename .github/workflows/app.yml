@@ -26,8 +26,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
-#        volumes:
-#          - ./esdata:/usr/share/elasticsearch/data
+        volumes:
+          - ./esdata:/usr/share/elasticsearch/data
 
     steps:
       - uses: actions/checkout@v3
