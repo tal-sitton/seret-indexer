@@ -51,6 +51,7 @@ class DB:
                     raw_site = hit['_source']
                     raw_site['mid'] = hit['_id']
                     raw_sites.append(raw_site)
+            self.logger.info(f"Parsed {len(raw_sites)} cached sites")
             return [SiteInfoModel(**raw_site) for raw_site in raw_sites]
         except Exception as e:
             self.logger.warning(f"Failed to get cached sites: {e}")
