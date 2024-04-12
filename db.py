@@ -45,7 +45,13 @@ class DB:
         try:
             res = self.client.mget(index=CACHE_INDEX, body={"ids": [site.mid for site in sites]})
             self.logger.info(f"Got {len(res['docs'])} cached sites")
-            return [SiteInfoModel(**hit['_source']) for hit in res['docs'] if hit['found']]
+            raw_sites: list[dict] = []
+            for hit in res['docs']:
+                if hit['found']:
+                    raw_site = hit['_source']
+                    raw_site['mid'] = hit['_id']
+                    raw_sites.append(raw_site)
+            return [SiteInfoModel(**raw_site) for raw_site in raw_sites]
         except Exception as e:
             self.logger.warning(f"Failed to get cached sites: {e}")
             return []

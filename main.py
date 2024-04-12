@@ -58,11 +58,11 @@ def get_sites(sitemap_url: str, session: requests.Session) -> list[SiteInfoModel
 
 def filter_cached_sites(sites: list[SiteInfoModel]) -> list[SiteInfoModel]:
     cached = db.get_cached(sites)
-    cached = {cache.id: cache.priority for cache in cached}
+    cached = {cache.mid: cache.priority for cache in cached}
     if cached:
         return [site for site in sites if
-                site.mid not in cached.keys() or (site.mid in cached.keys() and site.priority > 0.8)
-                or (site.mid in cached and site.priority != cached[site.mid])]
+                site.mid not in cached.keys() or site.priority > 0.8
+                or site.priority != cached[site.mid]]
     else:
         return sites
 
@@ -89,7 +89,11 @@ def handle_site(site: SiteInfoModel, session: requests.Session, movie_index: int
         logging.warning(f"Failed to get year for {site}")
         year = None
     raw_premiere = soup.find("span", {"itemprop": "datePublished"}).text.split(" ")[0]
-    premiere = datetime.strptime(raw_premiere, "%d/%m/%Y")
+    if raw_premiere:
+        premiere = datetime.strptime(raw_premiere, "%d/%m/%Y")
+    else:
+        premiere = datetime(year=year, month=1, day=1)
+        logging.warning(f"Failed to get premiere for {site}, setting to {premiere}")
     movie = MovieModel(id=site.mid, url=site.url, priority=site.priority, name=name, english_name=english_name,
                        keywords=keywords, description=description.text, image_url=image_url, year=year,
                        premiere=premiere, scrape_date=datetime.now())
