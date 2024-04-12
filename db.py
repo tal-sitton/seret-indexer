@@ -1,14 +1,19 @@
 import logging
+import os
 
+import dotenv
 from elasticsearch import Elasticsearch
 
 from mappings import MOVIE_MAPPING
 from movie_model import MovieModel
 from site_info_model import SiteInfoModel
 
+if not os.environ.get('ELASTIC_HOST'):
+    dotenv.load_dotenv()
+
 CACHE_INDEX = "seret_cache"
 MOVIES_INDEX = "seret_movies"
-ELASTIC_HOST = 'http://localhost:9200'
+ELASTIC_HOST = os.environ.get('ELASTIC_HOST')
 
 
 def thread(func):

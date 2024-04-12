@@ -49,6 +49,8 @@ jobs:
       - name: run program
         run:
           python main.py
+        env:
+          ELASTIC_HOST: http://elasticsearch:9200
 
       - name: config git
         run: |
