@@ -12,6 +12,10 @@ SITEMAP_URL = 'https://www.seret.co.il/Sitemapsite.xml'
 
 db = DB(logging.root)
 
+headers = {
+    'User-Agent': 'Mozilla/5.0',
+}
+
 
 def setup_logger():
     # log to file
@@ -93,6 +97,7 @@ def main():
     setup_logger()
     db.create_index()
     session = requests.Session()
+    session.headers = headers
     sites = get_sites(SITEMAP_URL, session)
     sites = filter_cached_sites(sites)
     sites.sort(key=lambda x: x.mid)
