@@ -31,8 +31,8 @@ jobs:
         continue-on-error: true
         run: |
           sleep 30
-          netstat -a -n | grep tcp | grep 9200
-          curl -X GET http://localhost:9200/
+          netstat -a -n
+#          curl -X GET http://localhost:9200/
 
 
 #      - uses: actions/checkout@v3
