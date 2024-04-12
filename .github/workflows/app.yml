@@ -42,6 +42,7 @@ jobs:
         continue-on-error: true
         run: |
           docker cp esdata elasticsearch:/usr/share/elasticsearch/data
+          docker restart elasticsearch
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
