@@ -40,13 +40,10 @@ jobs:
           docker cp esdata/. elasticsearch:/usr/share/elasticsearch/data
           docker exec -u root elasticsearch chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data
           docker restart elasticsearch
-          docker ps
           timeout 75s sh -c 'until docker ps | grep elasticsearch | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 5; done'
 
       - name: TEST cp to container
         run: |
-          docker ps
-          docker ps -a
           docker exec elasticsearch ls /usr/share/elasticsearch/data
 
       - name: Set up Python 3.11

@@ -54,7 +54,7 @@ class DB:
             self.logger.info(f"Parsed {len(raw_sites)} cached sites")
             return [SiteInfoModel(**raw_site) for raw_site in raw_sites]
         except Exception as e:
-            self.logger.warning(f"Failed to get cached sites: {e}")
+            self.logger.exception(f"Failed to get cached sites", exc_info=e)
             return []
 
     @thread
