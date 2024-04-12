@@ -47,6 +47,7 @@ class DB:
             self.logger.info(f"Got {len(res['docs'])} cached sites")
             raw_sites: list[dict] = []
             for hit in res['docs']:
+                self.logger.info(hit)
                 if hit['found']:
                     raw_site = hit['_source']
                     raw_site['mid'] = hit['_id']
