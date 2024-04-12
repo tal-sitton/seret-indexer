@@ -31,28 +31,24 @@ jobs:
         continue-on-error: true
         run: |
           sleep 30
-          curl -X GET http://localhost:9200/
           curl -X GET http://elasticsearch:9200/
 
       - name: running tests2
         continue-on-error: true
         run: |
           sleep 30
-          curl -X GET http://localhost:9200/
           curl -X GET http://elasticsearch:9200/
 
       - name: running tests3
         continue-on-error: true
         run: |
           sleep 30
-          curl -X GET http://localhost:9200/
           curl -X GET http://elasticsearch:9200/
 
       - name: running tests4
         continue-on-error: true
         run: |
           sleep 30
-          curl -X GET http://localhost:9200/
           curl -X GET http://elasticsearch:9200/
 
 
