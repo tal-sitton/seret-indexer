@@ -39,6 +39,7 @@ jobs:
         run: |
           docker cp esdata/. elasticsearch:/usr/share/elasticsearch/data
           docker restart elasticsearch
+          docker ps
           timeout 75s sh -c 'until docker ps | grep elasticsearch | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 5; done'
 
       - name: TEST cp to container
