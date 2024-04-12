@@ -1,5 +1,7 @@
 FROM elasticsearch:8.13.0
 
+ENV discovery.type=single-node
+ENV xpack.security.enabled=false
 
 RUN bin/elasticsearch-plugin install --batch analysis-icu && \
     bin/elasticsearch-plugin install https://github.com/Sefaria/Sefaria-ElasticSearch/releases/download/v1.1.6/sefaria-naive-lemmatizer-v1.1.6.zip && \
