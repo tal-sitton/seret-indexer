@@ -44,6 +44,7 @@ def get_sites(sitemap_url: str, session: requests.Session) -> list[SiteInfoModel
         mid = int(url.split('MID=')[-1])
         priority = float(site.find_next('priority').text)
         sites.append(SiteInfoModel(mid=mid, url=url, priority=priority))
+    logging.info(f"Found {len(sites)} sites")
     return sites
 
 
@@ -54,6 +55,8 @@ def filter_cached_sites(sites: list[SiteInfoModel]) -> list[SiteInfoModel]:
         return [site for site in sites if
                 site.mid not in cached.keys() or (site.mid in cached.keys() and site.priority > 0.8)
                 or (site.mid in cached and site.priority != cached[site.mid])]
+    else:
+        return sites
 
 
 def handle_site(site: SiteInfoModel, session: requests.Session, movie_index: int, all_movies_len: int):
