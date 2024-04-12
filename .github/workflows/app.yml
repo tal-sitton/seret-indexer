@@ -30,7 +30,7 @@ jobs:
 #          - ./esdata:/usr/share/elasticsearch/data
 
     steps:
-#      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: running tests
         continue-on-error: true
         run: |
