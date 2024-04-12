@@ -12,54 +12,54 @@ on:
     - cron: "23 0 * * *" # 2:23am every day israel time (23:23 UTC time)
 
 permissions: write-all
+jobs:
+  build:
 
-build:
+    runs-on: ubuntu-latest
 
-  runs-on: ubuntu-latest
+    services:
+      elastic:
+        image: ghcr.io/tal-sitton/heb-elastic:latest
+        ports:
+          - 9200:9200
+        volumes:
+          - ./esdata:/usr/share/elasticsearch/data
+        options: --name elasticsearch
 
-  services:
-    elastic:
-      image: ghcr.io/tal-sitton/heb-elastic:latest
-      ports:
-        - 9200:9200
-      volumes:
-        - ./esdata:/usr/share/elasticsearch/data
-      options: --name elasticsearch
+    steps:
 
-  steps:
+      - uses: actions/checkout@v3
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
-    - uses: actions/checkout@v3
-      if: github.event_name == 'pull_request'
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/checkout@v3
+        if: github.event_name != 'pull_request'
 
-    - uses: actions/checkout@v3
-      if: github.event_name != 'pull_request'
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: run program
+        run:
+          python main.py
 
-    - name: run program
-      run:
-        python main.py
+      - name: config git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-    - name: config git
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: add elastic-data
+        run:
+          git add esdata
 
-    - name: add elastic-data
-      run:
-        git add esdata
-
-    - name: commit file and push
-      run: |
-        git commit -m "Update elastic-data"
-        git push
+      - name: commit file and push
+        run: |
+          git commit -m "Update elastic-data"
+          git push
