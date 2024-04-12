@@ -42,9 +42,13 @@ class DB:
             self.logger.info(f"Created index {MOVIES_INDEX} with mapping")
 
     def get_cached(self, sites: list[SiteInfoModel]) -> list[SiteInfoModel]:
-        res = self.client.mget(index=CACHE_INDEX, body={"ids": [site.mid for site in sites]})
-        self.logger.info(f"Got {len(res['docs'])} cached sites")
-        return [SiteInfoModel(**hit['_source']) for hit in res['docs'] if hit['found']]
+        try:
+            res = self.client.mget(index=CACHE_INDEX, body={"ids": [site.mid for site in sites]})
+            self.logger.info(f"Got {len(res['docs'])} cached sites")
+            return [SiteInfoModel(**hit['_source']) for hit in res['docs'] if hit['found']]
+        except Exception as e:
+            self.logger.error(f"Failed to get cached sites: {e}")
+            return []
 
     @thread
     def add_to_cache(self, site: SiteInfoModel):
