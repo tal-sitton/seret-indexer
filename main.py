@@ -60,6 +60,7 @@ def filter_cached_sites(sites: list[SiteInfoModel]) -> list[SiteInfoModel]:
     cached = db.get_cached(sites)
     cached = {cache.mid: cache.priority for cache in cached}
     min_sites = {site.mid: site.priority for site in sites}
+    logging.info(str(cached))
     if cached:
         logging.info(str(cached))
         logging.info(str(min_sites))
