@@ -36,7 +36,7 @@ jobs:
 
       - name: unzip esdata
         run: |
-          apt install -y zip
+          sudo apt install -y zip
           unzip esdata.zip
 
       - name: cp to container
