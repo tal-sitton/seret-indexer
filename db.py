@@ -1,5 +1,6 @@
 import logging
 import os
+from datetime import datetime
 
 import dotenv
 from elasticsearch import Elasticsearch
@@ -62,6 +63,7 @@ class DB:
     def add_to_cache(self, site: SiteInfoModel):
         raw_site = site.dict()
         del raw_site['mid']
+        raw_site['cache_date'] = datetime.utcnow()
         self.client.index(index=CACHE_INDEX, body=raw_site, id=str(site.mid))
         logging.info(f"Added {site} to cache")
 

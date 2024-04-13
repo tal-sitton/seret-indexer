@@ -1,6 +1,13 @@
 MOVIE_MAPPING = {
     "properties": {
-        "description": {
+        "url": {
+            "type": "text",
+        },
+        "priority": {
+            "type": "float"
+        },
+
+        "name": {
             "type": "text",
             "analyzer": "sefaria-naive-lemmatizer",
         },
@@ -11,24 +18,21 @@ MOVIE_MAPPING = {
         "keywords": {
             "type": "text",
         },
-        "name": {
+        "description": {
             "type": "text",
             "analyzer": "sefaria-naive-lemmatizer",
+        },
+        "year": {
+            "type": "long"
         },
         "premiere": {
             "type": "date"
         },
-        "priority": {
-            "type": "float"
-        },
         "scrape_date": {
             "type": "date"
         },
-        "url": {
-            "type": "text",
-        },
-        "year": {
-            "type": "long"
+        "image_url": {
+            "type": "text"
         }
     }
 }

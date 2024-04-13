@@ -34,6 +34,11 @@ jobs:
       - uses: actions/checkout@v3
         if: github.event_name != 'pull_request'
 
+      - name: unzip esdata
+        run: |
+          apt install -y zip
+          unzip esdata.zip
+
       - name: cp to container
         continue-on-error: true
         run: |
@@ -71,7 +76,8 @@ jobs:
       - name: add elastic-data
         run: |
           docker cp elasticsearch:/usr/share/elasticsearch/data esdata
-          git add esdata
+          zip -r esdata.zip esdata
+          git add esdata.zip
 
       - name: commit file and push
         run: |

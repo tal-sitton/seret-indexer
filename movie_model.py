@@ -1,6 +1,7 @@
 from datetime import datetime
+from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class MovieModel(BaseModel):
@@ -12,6 +13,7 @@ class MovieModel(BaseModel):
     english_name: str
     keywords: list[str]
     description: str
-    year: int | None
+    year: Optional[int]
     premiere: datetime
-    scrape_date: datetime
+    scrape_date: Optional[datetime] = Field(default_factory=datetime.utcnow, alias='scrape_date')
+    image_url: Optional[str]

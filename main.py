@@ -96,7 +96,7 @@ def handle_site(site: SiteInfoModel, session: requests.Session, movie_index: int
         logging.warning(f"Failed to get premiere for {site}, setting to {premiere}")
     movie = MovieModel(id=site.mid, url=site.url, priority=site.priority, name=name, english_name=english_name,
                        keywords=keywords, description=description.text, image_url=image_url, year=year,
-                       premiere=premiere, scrape_date=datetime.now())
+                       premiere=premiere)
     db.submit_movie(movie, movie_index, all_movies_len, site)
 
 
