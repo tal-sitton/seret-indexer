@@ -75,6 +75,7 @@ jobs:
 
       - name: add elastic-data
         run: |
+          sudo rm -rf esdata
           docker cp elasticsearch:/usr/share/elasticsearch/data esdata
           zip -r esdata.zip esdata
           git add esdata.zip
