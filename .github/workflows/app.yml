@@ -16,6 +16,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     services:
       elasticsearch:
         image: ghcr.io/tal-sitton/heb-elastic:latest
@@ -26,12 +30,12 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         if: github.event_name == 'pull_request'
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         if: github.event_name != 'pull_request'
 
       - name: unzip esdata
@@ -53,7 +57,7 @@ jobs:
           curl -X GET "localhost:9200/_cat/indices"
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -77,6 +81,7 @@ jobs:
         run: |
           sudo rm -rf esdata
           docker cp elasticsearch:/usr/share/elasticsearch/data esdata
+          find esdata -type f -name '*.lock' -delete
           zip -r esdata.zip esdata
           git add esdata.zip
 
@@ -84,3 +89,17 @@ jobs:
         run: |
           git commit -m "Update elastic-data"
           git push
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/tal-sitton/seret-search:latest
