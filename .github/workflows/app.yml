@@ -16,10 +16,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      packages: write
-
     services:
       elasticsearch:
         image: ghcr.io/tal-sitton/seret-search:latest
