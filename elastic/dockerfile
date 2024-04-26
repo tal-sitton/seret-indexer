@@ -7,5 +7,10 @@ RUN bin/elasticsearch-plugin install --batch analysis-icu && \
     bin/elasticsearch-plugin install https://github.com/Sefaria/Sefaria-ElasticSearch/releases/download/v1.1.6/sefaria-naive-lemmatizer-v1.1.6.zip && \
     bin/elasticsearch-plugin install https://github.com/Sefaria/Sefaria-ElasticSearch/releases/download/v1.1.6/sefaria-naive-lemmatizer-less-prefixes-v1.1.6.zip
 
+COPY setup-data.sh /usr/local/bin/setup-data.sh
+USER root
+
+ENTRYPOINT ["bash", "-c", "setup-data.sh && su - elasticsearch -c 'env xpack.security.enabled=false discovery.type=single-node docker-entrypoint.sh'"]
+
 HEALTHCHECK --interval=5s --timeout=3s --retries=3 \
   CMD curl -s -f http://localhost:9200/_cluster/health || exit 1
