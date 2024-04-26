@@ -80,6 +80,7 @@ jobs:
       - name: add elastic-data
         run: |
           sudo rm -rf esdata
+          docker stop elasticsearch
           docker cp elasticsearch:/usr/share/elasticsearch/data esdata
           find esdata -type f -name '*.lock' -delete
           zip -r esdata.zip esdata
