@@ -3,6 +3,7 @@ version: '3.7'
 services:
   elasticsearch:
     image: ghcr.io/tal-sitton/seret-search:latest
+    container_name: elasticsearch
     pull_policy: always
     ports:
       - "9200:9200"
@@ -21,4 +22,7 @@ services:
       - "8118:8118"
     privileged: true
     dns: "1.1.1.1"
-    env_file: .env
+    environment:
+      - PASTE_DEV_KEY='<your_dev_key>'
+      - PASTE_USER_KEY='<your_user_key>'
+      - PASTE_KEYS='<your_keys>'
