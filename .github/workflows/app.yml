@@ -31,6 +31,7 @@ jobs:
         env:
           PASTE_DEV_KEY: ${{ secrets.PASTE_DEV_KEY }}
           PASTE_USER_KEY: ${{ secrets.PASTE_USER_KEY }}
+          PASTE_KEYS: ${{ secrets.PASTE_KEYS }}
         options: >-
           --name proxy
           --privileged
