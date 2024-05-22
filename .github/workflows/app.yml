@@ -24,6 +24,17 @@ jobs:
         options: >-
           --name elasticsearch
 
+      proxy-vpn:
+        image: ghcr.io/tal-sitton/proxy-vpn:latest
+        ports:
+          - 8118:8118
+        env:
+          PASTE_DEV_KEY: ${{ secrets.PASTE_DEV_KEY }}
+          PASTE_USER_KEY: ${{ secrets.PASTE_USER_KEY }}
+        options: >-
+          --name proxy
+          --privileged
+
     steps:
 
       - uses: actions/checkout@v4

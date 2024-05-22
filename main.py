@@ -109,6 +109,7 @@ def main():
     db.create_index()
     session = requests.Session()
     session.headers = headers
+    session.proxies = {'http': "127.0.0.1:8118", 'https': "127.0.0.1:8118"}
     sites = get_sites(SITEMAP_URL, session)
     sites = filter_cached_sites(sites)
     sites.sort(key=lambda x: x.mid)
