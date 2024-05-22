@@ -35,6 +35,10 @@ def setup_logger():
 
 def get_sitemap(sitemap_url: str, session: requests.Session) -> bytes:
     res = session.get(sitemap_url)
+    if res.status_code != 200:
+        logging.error(f"Failed to get sitemap, status code: {res.status_code}")
+    with open('sitemap.html', 'wb') as f:
+        f.write(res.content)
     return res.content
 
 

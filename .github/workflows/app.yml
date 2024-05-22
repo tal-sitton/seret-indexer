@@ -80,3 +80,17 @@ jobs:
         run: |
           docker commit elasticsearch ghcr.io/tal-sitton/seret-search:latest
           docker push ghcr.io/tal-sitton/seret-search:latest
+
+      - name: save logs artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: log.log
+
+      - name: save sitemap artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitemap
+          path: sitemap.html
