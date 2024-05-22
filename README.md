@@ -40,9 +40,12 @@ and you can access the elastic in port 9200, and the kibana in port 5601.
 
 ### Usage
 
-1. Start the Elasticsearch and VPN Proxy services using Docker Compose:
+* Note that in the docker-compose file there is a service for proxy-vpn, this is only required for the github actions
+  to run, and is not needed when running the program locally.
+
+1. Start the Elasticsearch (and if you want, the Kibana) services using Docker Compose:
    ```
-   docker-compose up -d
+   docker compose -f elastic/docker-compose.yml up -d elasticsearch kibana
    ```
 2. Run the main Python script:
    ```
